@@ -14,6 +14,7 @@ from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import unquote, urlparse
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 BASE_DIR = Path(__file__).resolve().parent
 PUBLIC_DIR = BASE_DIR / "public"
@@ -27,6 +28,7 @@ DEFAULT_OWNER_PASSWORD = os.environ.get(
     "UTOWN_OWNER_PASSWORD",
     os.environ.get("UTOWN_ADMIN_PASSWORD", "utown-admin"),
 )
+APP_TIMEZONE = os.environ.get("UTOWN_TIMEZONE", "UTC")
 
 ACTIVE_REQUEST_STATUSES = {"pending", "approved"}
 LOGIN_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{2,31}$")
@@ -38,6 +40,14 @@ class ValidationError(Exception):
 
 def utc_timestamp() -> str:
     return datetime.now(UTC).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def local_today_iso() -> str:
+    try:
+        timezone = ZoneInfo(APP_TIMEZONE)
+    except ZoneInfoNotFoundError:
+        timezone = UTC
+    return datetime.now(timezone).date().isoformat()
 
 
 def hash_secret(secret: str) -> str:
@@ -273,7 +283,7 @@ class LeaveTrackerStore:
 
             return {
                 "company": payload.get("company", "UTown"),
-                "today": date.today().isoformat(),
+                "today": local_today_iso(),
                 "ownerLoginId": payload["owner"]["loginId"],
                 "employeeCount": sum(1 for employee in payload["employees"] if employee.get("active", True)),
                 "requests": active_requests,
@@ -312,7 +322,7 @@ class LeaveTrackerStore:
 
             return {
                 "company": payload.get("company", "UTown"),
-                "today": date.today().isoformat(),
+                "today": local_today_iso(),
                 "ownerLoginId": payload["owner"]["loginId"],
                 "employees": employees,
                 "requests": requests,

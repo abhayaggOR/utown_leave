@@ -67,6 +67,7 @@ This repo is already prepared for that:
 - `Dockerfile` included
 - `HOST` defaults to `0.0.0.0`
 - `UTOWN_STORE_PATH` can point to a mounted persistent file path
+- `UTOWN_TIMEZONE` can set the business timezone for the in-app "today" date
 - Health check available at `/healthz`
 
 ### Example persistent file path setup
