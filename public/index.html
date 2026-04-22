@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UTown Leave Tracker</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">UTown Internal Tool</p>
+          <h1>Employee leave requests with owner approval built in.</h1>
+          <p class="hero-text">
+            Employees log in with their own employee ID and password, request one weekday leave per
+            month, and the owner approves or disapproves each request while the whole team sees the
+            live schedule.
+          </p>
+          <div class="rule-strip">
+            <span>1 request per employee, per month</span>
+            <span>No Saturday or Sunday booking</span>
+            <span>No two employees on the same date</span>
+            <span>Owner approval required</span>
+          </div>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-card">
+            <span class="stat-label">Active Employees</span>
+            <strong id="employeeCount">0</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Approved Leaves</span>
+            <strong id="approvedCount">0</strong>
+          </div>
+          <div class="stat-card">
+            <span class="stat-label">Pending Requests</span>
+            <strong id="pendingCount">0</strong>
+          </div>
+        </div>
+      </header>
+
+      <main class="dashboard">
+        <section class="panel request-panel">
+          <div class="panel-header">
+            <div>
+              <p class="section-tag">Employee Access</p>
+              <h2>Request leave with employee credentials</h2>
+            </div>
+            <span class="live-pill">Live status board</span>
+          </div>
+
+          <form id="employeeAccessForm" class="stack">
+            <label>
+              <span>Employee ID</span>
+              <input id="employeeLoginId" type="text" placeholder="Example: UT001" required />
+            </label>
+
+            <label>
+              <span>Employee Password</span>
+              <input id="employeePassword" type="password" placeholder="Enter employee password" required />
+            </label>
+
+            <label>
+              <span>Requested Leave Date</span>
+              <input id="leaveDate" type="date" required />
+            </label>
+
+            <div class="split-actions">
+              <button id="employeeLoginButton" type="button" class="ghost-button">View My Requests</button>
+              <button type="submit" class="primary-button">Submit Request</button>
+            </div>
+          </form>
+
+          <div class="inline-note">
+            A pending request blocks that date immediately. The owner can approve or disapprove it
+            from the owner panel.
+          </div>
+
+          <div class="employee-summary">
+            <div class="summary-header">
+              <h3>My request history</h3>
+              <button id="employeeLogoutButton" class="ghost-button" type="button">Log out</button>
+            </div>
+            <div id="employeeIdentity" class="empty-state compact">
+              Sign in with an employee ID and password to view your own requests.
+            </div>
+            <div id="employeeRequestList" class="empty-state compact">
+              No employee session loaded yet.
+            </div>
+          </div>
+        </section>
+
+        <section class="panel board-panel">
+          <div class="panel-header board-header">
+            <div>
+              <p class="section-tag">Shared Board</p>
+              <h2>Live leave calendar for the whole company</h2>
+            </div>
+            <label class="month-picker">
+              <span>Month</span>
+              <select id="monthSelect"></select>
+            </label>
+          </div>
+
+          <div class="calendar-legend">
+            <span><i class="dot available"></i> Available weekday</span>
+            <span><i class="dot pending"></i> Pending request</span>
+            <span><i class="dot approved"></i> Approved leave</span>
+            <span><i class="dot weekend"></i> Weekend</span>
+          </div>
+
+          <div id="calendarGrid" class="calendar-grid"></div>
+
+          <div class="schedule-list">
+            <div class="summary-header">
+              <h3>Requests in this month</h3>
+            </div>
+            <div id="monthRequestList" class="empty-state compact">
+              No leave requests in this month yet.
+            </div>
+          </div>
+        </section>
+
+        <section class="panel admin-panel">
+          <div class="panel-header">
+            <div>
+              <p class="section-tag">Owner Access</p>
+              <h2>Hand over the project with credentials ready</h2>
+            </div>
+          </div>
+
+          <form id="ownerLoginForm" class="stack">
+            <label>
+              <span>Owner Login ID</span>
+              <input id="ownerLoginId" type="text" placeholder="owner" required />
+            </label>
+            <label>
+              <span>Owner Password</span>
+              <input id="ownerPassword" type="password" placeholder="Enter owner password" required />
+            </label>
+            <button type="submit" class="primary-button">Unlock Owner Panel</button>
+          </form>
+
+          <div id="ownerContent" class="admin-content hidden">
+            <div class="admin-banner">
+              Owner controls are unlocked on this browser.
+              <button id="ownerLogoutButton" class="ghost-button" type="button">Log out</button>
+            </div>
+
+            <div class="admin-block">
+              <h3>Owner account</h3>
+              <div id="ownerIdentity" class="empty-state compact">
+                Current owner login ID: owner
+              </div>
+              <form id="ownerCredentialsForm" class="admin-form">
+                <input id="newOwnerLoginId" type="text" placeholder="New owner login ID" required />
+                <input id="newOwnerPassword" type="password" placeholder="New owner password" required />
+                <button type="submit" class="primary-button">Save Owner Credentials</button>
+              </form>
+            </div>
+
+            <div class="admin-block">
+              <h3>Create employee account</h3>
+              <form id="employeeForm" class="admin-form">
+                <input id="employeeName" type="text" placeholder="Employee name" required />
+                <input
+                  id="employeePasswordInput"
+                  type="text"
+                  placeholder="Optional custom password (leave blank to auto-generate)"
+                />
+                <button type="submit" class="primary-button">Generate Employee Account</button>
+              </form>
+              <div id="generatedCredentials" class="empty-state compact">
+                Newly generated employee credentials will appear here for handover.
+              </div>
+            </div>
+
+            <div class="admin-block">
+              <h3>Pending approvals</h3>
+              <div id="pendingRequestList" class="empty-state compact">
+                No pending leave requests right now.
+              </div>
+            </div>
+
+            <div class="admin-block">
+              <h3>Employees</h3>
+              <div id="employeeAdminList" class="empty-state compact">
+                No employees added yet.
+              </div>
+            </div>
+
+            <div class="admin-block">
+              <h3>All requests</h3>
+              <div id="ownerRequestList" class="empty-state compact">
+                No leave activity yet.
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

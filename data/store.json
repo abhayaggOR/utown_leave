@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 2,
+  "company": "UTown",
+  "owner": {
+    "loginId": "owner",
+    "passwordHash": "6e5c9d55c4e2a54fe6fa21e90b814cf1de37fe04c17868c4ae88215d35dbb3b2",
+    "updatedAt": "2026-04-23T00:00:00Z"
+  },
+  "employees": [],
+  "requests": []
+}
