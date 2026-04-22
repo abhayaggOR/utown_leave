@@ -6,6 +6,7 @@ import mimetypes
 import os
 import re
 import secrets
+import base64
 import threading
 import uuid
 from datetime import UTC, date, datetime
@@ -40,7 +41,20 @@ def utc_timestamp() -> str:
 
 
 def hash_secret(secret: str) -> str:
-    return hashlib.sha256(secret.encode("utf-8")).hexdigest()
+    salt = secrets.token_bytes(16)
+    derived_key = hashlib.scrypt(secret.encode("utf-8"), salt=salt, n=2**14, r=8, p=1)
+    return f"scrypt${base64.b64encode(salt).decode('ascii')}${base64.b64encode(derived_key).decode('ascii')}"
+
+
+def verify_secret(secret: str, stored_hash: str) -> bool:
+    if stored_hash.startswith("scrypt$"):
+        _, salt_b64, derived_key_b64 = stored_hash.split("$", 2)
+        salt = base64.b64decode(salt_b64.encode("ascii"))
+        expected_key = base64.b64decode(derived_key_b64.encode("ascii"))
+        candidate_key = hashlib.scrypt(secret.encode("utf-8"), salt=salt, n=2**14, r=8, p=1)
+        return secrets.compare_digest(candidate_key, expected_key)
+
+    return secrets.compare_digest(stored_hash, hashlib.sha256(secret.encode("utf-8")).hexdigest())
 
 
 def normalize_name(name: str) -> str:
@@ -233,9 +247,9 @@ class LeaveTrackerStore:
         with self.lock:
             payload = self._read()
             owner = payload["owner"]
-            return owner["loginId"] == DEFAULT_OWNER_LOGIN_ID and secrets.compare_digest(
+            return owner["loginId"] == DEFAULT_OWNER_LOGIN_ID and verify_secret(
+                DEFAULT_OWNER_PASSWORD,
                 owner["passwordHash"],
-                hash_secret(DEFAULT_OWNER_PASSWORD),
             )
 
     def verify_admin(self, login_id: str, password: str) -> bool:
@@ -245,9 +259,9 @@ class LeaveTrackerStore:
             effective_login_id = login_id.strip() or owner["loginId"]
             if not password:
                 return False
-            return secrets.compare_digest(owner["loginId"], effective_login_id) and secrets.compare_digest(
+            return secrets.compare_digest(owner["loginId"], effective_login_id) and verify_secret(
+                password,
                 owner["passwordHash"],
-                hash_secret(password),
             )
 
     def public_snapshot(self) -> dict:
@@ -521,7 +535,7 @@ class LeaveTrackerStore:
     def _require_employee_password(self, employee: dict, password: str) -> None:
         if not password:
             raise ValidationError("Enter the employee password.")
-        if not secrets.compare_digest(employee["passwordHash"], hash_secret(password)):
+        if not verify_secret(password, employee["passwordHash"]):
             raise ValidationError("The employee ID or password is incorrect.")
 
     def _require_active_employee_by_login(self, payload: dict, login_id: str, password: str) -> dict:
