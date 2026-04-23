@@ -442,7 +442,7 @@ select:focus {
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 10px;
+  gap: 8px;
 }
 
 .calendar-weekday,
@@ -452,23 +452,23 @@ select:focus {
 }
 
 .calendar-weekday {
-  padding: 10px 8px;
+  padding: 8px 6px;
   text-align: center;
   background: rgba(120, 131, 236, 0.08);
   color: var(--muted);
   font-family: "IBM Plex Mono", monospace;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
 }
 
 .calendar-card {
-  min-height: 128px;
-  padding: 14px;
+  min-height: 92px;
+  padding: 10px 11px;
   background: rgba(9, 11, 42, 0.72);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 12px;
+  gap: 8px;
   overflow: hidden;
   transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
 }
@@ -516,7 +516,7 @@ select:focus {
 
 .calendar-card-header {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: flex-start;
   gap: 8px;
   min-width: 0;
@@ -524,7 +524,8 @@ select:focus {
 
 .calendar-day {
   display: block;
-  font-size: 1.9rem;
+  flex-shrink: 0;
+  font-size: 1.5rem;
   line-height: 0.95;
   letter-spacing: -0.06em;
 }
@@ -534,14 +535,15 @@ select:focus {
   align-items: center;
   justify-content: center;
   max-width: 100%;
-  padding: 4px 8px;
+  padding: 3px 7px;
   border-radius: 999px;
   border: 1px solid var(--border);
   font-family: "IBM Plex Mono", monospace;
-  font-size: 0.68rem;
-  letter-spacing: 0.06em;
+  font-size: 0.6rem;
+  letter-spacing: 0.05em;
   line-height: 1.1;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .available-state {
@@ -577,9 +579,12 @@ select:focus {
 .calendar-card-content {
   margin-top: auto;
   max-width: 100%;
-  font-size: 0.96rem;
-  line-height: 1.35;
-  overflow-wrap: anywhere;
+  font-size: 0.88rem;
+  line-height: 1.2;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .leave-list,
@@ -744,7 +749,7 @@ select:focus {
   }
 
   .calendar-grid {
-    grid-template-columns: repeat(7, minmax(110px, 1fr));
+    grid-template-columns: repeat(7, minmax(96px, 1fr));
     overflow-x: auto;
     padding-bottom: 6px;
   }
@@ -794,6 +799,7 @@ select:focus {
 
   .calendar-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
   }
 
   .calendar-weekday {
@@ -801,8 +807,21 @@ select:focus {
   }
 
   .calendar-card {
-    min-height: 120px;
-    padding: 12px;
+    min-height: 84px;
+    padding: 9px 10px;
+  }
+
+  .calendar-day {
+    font-size: 1.32rem;
+  }
+
+  .calendar-state {
+    font-size: 0.56rem;
+    padding: 3px 6px;
+  }
+
+  .calendar-card-content {
+    font-size: 0.82rem;
   }
 
   .month-picker {
