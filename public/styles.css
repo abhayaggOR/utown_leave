@@ -1,18 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;700&display=swap");
 
 :root {
-  --bg: #08080b;
-  --bg-elevated: #121218;
-  --bg-soft: #1a1b24;
-  --text: #f5f5f7;
-  --muted: #b8b7c9;
-  --border: rgba(255, 255, 255, 0.12);
-  --border-strong: rgba(196, 181, 253, 0.32);
-  --accent: #8b5cf6;
-  --accent-soft: #c4b5fd;
-  --accent-deep: #5b21b6;
-  --danger: #f8fafc;
-  --shadow: 0 22px 60px rgba(0, 0, 0, 0.38);
+  --bg: #05061b;
+  --bg-elevated: #0b0d31;
+  --bg-soft: #171a49;
+  --text: #f7f8ff;
+  --muted: #b8bfdc;
+  --border: rgba(194, 201, 255, 0.13);
+  --border-strong: rgba(190, 197, 255, 0.34);
+  --accent: #9ca6ff;
+  --accent-soft: #d8dcff;
+  --accent-deep: #626de3;
+  --danger: #f7f8ff;
+  --shadow: 0 24px 64px rgba(1, 3, 24, 0.5);
 }
 
 * {
@@ -28,9 +28,10 @@ body {
 body {
   font-family: "Space Grotesk", "Avenir Next", "Segoe UI", sans-serif;
   background:
-    radial-gradient(circle at top left, rgba(139, 92, 246, 0.22), transparent 26%),
-    radial-gradient(circle at top right, rgba(255, 255, 255, 0.1), transparent 22%),
-    linear-gradient(180deg, #060608 0%, #0d0d13 100%);
+    radial-gradient(circle at 14% 12%, rgba(156, 166, 255, 0.24), transparent 23%),
+    radial-gradient(circle at 82% 18%, rgba(88, 97, 192, 0.24), transparent 21%),
+    radial-gradient(circle at 50% 82%, rgba(18, 21, 74, 0.38), transparent 33%),
+    linear-gradient(180deg, #2a2d34 0%, #171a2b 34%, #07092e 68%, #040519 100%);
   color: var(--text);
 }
 
@@ -56,7 +57,7 @@ select {
 .hero-copy,
 .hero-stats,
 .panel {
-  background: linear-gradient(180deg, rgba(20, 21, 31, 0.9), rgba(10, 10, 15, 0.96));
+  background: linear-gradient(180deg, rgba(14, 16, 55, 0.92), rgba(7, 8, 30, 0.97));
   border: 1px solid var(--border);
   border-radius: 24px;
   box-shadow: var(--shadow);
@@ -69,6 +70,16 @@ select {
   overflow: hidden;
 }
 
+.hero-copy::before {
+  content: "";
+  position: absolute;
+  inset: -18% auto auto -10%;
+  width: 220px;
+  height: 220px;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(216, 220, 255, 0.14), transparent 72%);
+}
+
 .hero-copy::after {
   content: "";
   position: absolute;
@@ -76,7 +87,48 @@ select {
   width: 240px;
   height: 240px;
   border-radius: 999px;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.28), transparent 70%);
+  background: radial-gradient(circle, rgba(108, 119, 235, 0.26), transparent 72%);
+}
+
+.hero-brand {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 1;
+}
+
+.brand-mark {
+  width: clamp(108px, 14vw, 144px);
+  aspect-ratio: 1;
+  padding: 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(202, 208, 255, 0.18);
+  background: linear-gradient(145deg, rgba(216, 220, 255, 0.08), rgba(8, 9, 42, 0.38));
+  box-shadow: 0 18px 36px rgba(2, 3, 26, 0.34);
+  flex-shrink: 0;
+}
+
+.brand-mark img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 999px;
+}
+
+.brand-copy {
+  display: grid;
+  gap: 8px;
+}
+
+.brand-caption {
+  color: rgba(216, 220, 255, 0.78);
+  font-family: "IBM Plex Mono", monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.76rem;
 }
 
 .eyebrow,
@@ -108,8 +160,10 @@ label span {
 
 .hero h1 {
   font-size: clamp(2rem, 4vw, 3.7rem);
-  max-width: 12ch;
+  max-width: 11ch;
   line-height: 0.98;
+  position: relative;
+  z-index: 1;
 }
 
 .hero-text {
@@ -118,6 +172,8 @@ label span {
   font-size: 1.02rem;
   line-height: 1.7;
   margin: 20px 0 24px;
+  position: relative;
+  z-index: 1;
 }
 
 .rule-strip {
@@ -129,7 +185,7 @@ label span {
 .rule-strip span,
 .live-pill {
   border: 1px solid var(--border-strong);
-  background: rgba(139, 92, 246, 0.12);
+  background: rgba(110, 121, 227, 0.14);
   color: var(--accent-soft);
   padding: 10px 14px;
   border-radius: 999px;
@@ -144,7 +200,7 @@ label span {
 }
 
 .stat-card {
-  background: rgba(255, 255, 255, 0.04);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(156, 166, 255, 0.06));
   border: 1px solid var(--border);
   border-radius: 18px;
   padding: 18px;
@@ -224,7 +280,7 @@ select {
   width: 100%;
   border: 1px solid var(--border);
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(9, 11, 42, 0.7);
   color: var(--text);
   padding: 14px 16px;
   outline: none;
@@ -235,7 +291,7 @@ input:focus,
 select:focus {
   border-color: var(--accent-soft);
   transform: translateY(-1px);
-  background: rgba(139, 92, 246, 0.08);
+  background: rgba(156, 166, 255, 0.12);
 }
 
 .primary-button,
@@ -249,12 +305,12 @@ select:focus {
 
 .primary-button {
   background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
-  color: white;
+  color: #06072c;
   font-weight: 600;
 }
 
 .ghost-button {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(90, 100, 194, 0.14);
   color: var(--text);
   border: 1px solid var(--border);
 }
@@ -288,7 +344,7 @@ select:focus {
   margin-top: 16px;
   padding: 16px;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(11, 13, 47, 0.62);
   border: 1px dashed var(--border);
   line-height: 1.6;
 }
@@ -320,11 +376,11 @@ select:focus {
 }
 
 .dot.available {
-  background: rgba(196, 181, 253, 0.45);
+  background: rgba(216, 220, 255, 0.55);
 }
 
 .dot.pending {
-  background: rgba(196, 181, 253, 0.92);
+  background: rgba(156, 166, 255, 0.92);
 }
 
 .dot.approved {
@@ -350,7 +406,7 @@ select:focus {
 .calendar-weekday {
   padding: 10px 8px;
   text-align: center;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(120, 131, 236, 0.08);
   color: var(--muted);
   font-family: "IBM Plex Mono", monospace;
   font-size: 0.78rem;
@@ -360,7 +416,7 @@ select:focus {
 .calendar-card {
   min-height: 112px;
   padding: 14px;
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(9, 11, 42, 0.72);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -370,7 +426,7 @@ select:focus {
 
 .calendar-card:hover {
   transform: translateY(-2px);
-  border-color: rgba(196, 181, 253, 0.38);
+  border-color: rgba(185, 193, 255, 0.38);
 }
 
 .calendar-card.empty {
@@ -381,7 +437,7 @@ select:focus {
 
 .calendar-card.weekend-card {
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(11, 13, 47, 0.08)),
     rgba(255, 255, 255, 0.02);
   border-style: dashed;
   opacity: 0.8;
@@ -389,16 +445,16 @@ select:focus {
 
 .calendar-card.pending-card {
   background:
-    linear-gradient(180deg, rgba(196, 181, 253, 0.18), rgba(139, 92, 246, 0.06)),
+    linear-gradient(180deg, rgba(216, 220, 255, 0.18), rgba(108, 119, 235, 0.08)),
     rgba(255, 255, 255, 0.04);
-  border-color: rgba(196, 181, 253, 0.42);
+  border-color: rgba(190, 197, 255, 0.42);
 }
 
 .calendar-card.approved-card {
   background:
-    linear-gradient(180deg, rgba(139, 92, 246, 0.18), rgba(91, 33, 182, 0.08)),
+    linear-gradient(180deg, rgba(122, 132, 242, 0.18), rgba(67, 76, 174, 0.1)),
     rgba(255, 255, 255, 0.04);
-  border-color: rgba(196, 181, 253, 0.42);
+  border-color: rgba(190, 197, 255, 0.42);
 }
 
 .calendar-card.today-card {
@@ -406,7 +462,7 @@ select:focus {
 }
 
 .calendar-card.selected-card {
-  outline: 1px solid rgba(196, 181, 253, 0.54);
+  outline: 1px solid rgba(190, 197, 255, 0.54);
 }
 
 .calendar-card strong {
@@ -443,7 +499,7 @@ select:focus {
 .identity-card {
   border: 1px solid var(--border);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(12, 14, 48, 0.66);
 }
 
 .leave-row,
@@ -509,15 +565,15 @@ select:focus {
 }
 
 .status-pending {
-  background: rgba(196, 181, 253, 0.14);
+  background: rgba(216, 220, 255, 0.12);
   color: var(--accent-soft);
-  border-color: rgba(196, 181, 253, 0.32);
+  border-color: rgba(190, 197, 255, 0.32);
 }
 
 .status-approved {
-  background: rgba(139, 92, 246, 0.18);
-  color: white;
-  border-color: rgba(139, 92, 246, 0.45);
+  background: rgba(122, 132, 242, 0.2);
+  color: var(--text);
+  border-color: rgba(122, 132, 242, 0.42);
 }
 
 .status-rejected {
@@ -553,7 +609,7 @@ select:focus {
   padding: 14px 16px;
   border-radius: 16px;
   border: 1px solid var(--border-strong);
-  background: rgba(12, 12, 16, 0.96);
+  background: rgba(7, 8, 28, 0.97);
   color: var(--text);
   box-shadow: var(--shadow);
   z-index: 20;
@@ -609,6 +665,12 @@ select:focus {
   .admin-banner {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .hero-brand {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
   }
 
   .calendar-grid {
