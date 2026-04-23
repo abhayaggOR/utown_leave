@@ -47,6 +47,53 @@ select {
   padding: 32px 0 48px;
 }
 
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 24px;
+  padding: 20px 24px;
+  background: linear-gradient(180deg, rgba(14, 16, 55, 0.92), rgba(7, 8, 30, 0.97));
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+}
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.compact-mark {
+  width: 72px;
+  padding: 6px;
+}
+
+.topbar-copy {
+  min-width: 0;
+}
+
+.topbar-copy .eyebrow {
+  margin-bottom: 6px;
+}
+
+.topbar-copy strong {
+  display: block;
+  font-size: 1.35rem;
+  letter-spacing: -0.03em;
+}
+
+.topbar-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(140px, 1fr));
+  gap: 14px;
+  width: min(100%, 560px);
+}
+
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1.7fr) minmax(260px, 0.95fr);
@@ -632,6 +679,15 @@ select:focus {
 }
 
 @media (max-width: 1120px) {
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .topbar-stats {
+    width: 100%;
+  }
+
   .hero,
   .dashboard {
     grid-template-columns: 1fr;
@@ -648,6 +704,19 @@ select:focus {
   .app-shell {
     width: min(100% - 20px, 1280px);
     padding-top: 20px;
+  }
+
+  .topbar {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .topbar-brand {
+    align-items: center;
+  }
+
+  .topbar-stats {
+    grid-template-columns: 1fr;
   }
 
   .hero-copy,
