@@ -512,6 +512,8 @@ class LeaveTrackerStore:
             "updatedAt": request.get("updatedAt"),
             "decisionAt": request.get("decisionAt"),
         }
+        if employee:
+            serialized["employeeLoginId"] = employee["loginId"]
         if include_login_id and employee:
             serialized["employeeLoginId"] = employee["loginId"]
         return serialized

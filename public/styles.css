@@ -380,7 +380,11 @@ select:focus {
 }
 
 .calendar-card.weekend-card {
-  background: rgba(255, 255, 255, 0.02);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)),
+    rgba(255, 255, 255, 0.02);
+  border-style: dashed;
+  opacity: 0.8;
 }
 
 .calendar-card.pending-card {

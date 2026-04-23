@@ -68,6 +68,7 @@ function bindEvents() {
   elements.employeeAccessForm.addEventListener("submit", submitLeaveRequest);
   elements.employeeLoginButton.addEventListener("click", loadEmployeeSession);
   elements.employeeLogoutButton.addEventListener("click", logoutEmployee);
+  elements.leaveDate.addEventListener("change", validateLeaveDateInput);
   elements.monthSelect.addEventListener("change", () => {
     state.selectedMonth = elements.monthSelect.value;
     renderBoard();
@@ -244,7 +245,7 @@ function renderCalendar() {
     const label = document.createElement("small");
 
     if (isWeekend) {
-      label.textContent = "Weekend";
+      label.textContent = "Locked";
     } else if (request) {
       label.textContent = request.status === "approved" ? "Approved" : "Pending";
     } else {
@@ -255,11 +256,11 @@ function renderCalendar() {
 
     const content = document.createElement("p");
     if (request) {
-      content.textContent = `${request.employeeName} • ${request.status}`;
+      content.textContent = request.employeeLoginId || request.employeeName;
     } else if (isWeekend) {
-      content.textContent = "No leave allowed.";
+      content.textContent = "Weekend: leave not allowed";
     } else {
-      content.textContent = "Open for requests";
+      content.textContent = "Available";
     }
 
     card.append(heading, content);
@@ -546,6 +547,10 @@ async function submitLeaveRequest(event) {
   const password = elements.employeePassword.value;
   const date = elements.leaveDate.value;
 
+  if (!validateLeaveDateInput()) {
+    return;
+  }
+
   if (!loginId || !password || !date) {
     showToast("Fill in employee ID, password, and leave date.", true);
     return;
@@ -774,6 +779,24 @@ function formatLongDate(isoDate) {
 
 function capitalize(value) {
   return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+function validateLeaveDateInput() {
+  const date = elements.leaveDate.value;
+  if (!date) {
+    elements.leaveDate.setCustomValidity("");
+    return true;
+  }
+
+  const weekday = new Date(`${date}T00:00:00`).getDay();
+  if (weekday === 0 || weekday === 6) {
+    elements.leaveDate.setCustomValidity("Weekend leave is not allowed.");
+    elements.leaveDate.reportValidity();
+    return false;
+  }
+
+  elements.leaveDate.setCustomValidity("");
+  return true;
 }
 
 function escapeHtml(value) {
