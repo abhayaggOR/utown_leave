@@ -240,27 +240,36 @@ function renderCalendar() {
       .join(" ");
 
     const heading = document.createElement("div");
+    heading.className = "calendar-card-header";
+
     const number = document.createElement("strong");
+    number.className = "calendar-day";
     number.textContent = String(day);
+
     const label = document.createElement("small");
+    label.className = "calendar-state";
 
     if (isWeekend) {
-      label.textContent = "Locked";
+      label.textContent = "Weekend";
+      label.classList.add("weekend-state");
     } else if (request) {
       label.textContent = request.status === "approved" ? "Approved" : "Pending";
+      label.classList.add(request.status === "approved" ? "approved-state" : "pending-state");
     } else {
       label.textContent = "Available";
+      label.classList.add("available-state");
     }
 
     heading.append(number, label);
 
     const content = document.createElement("p");
+    content.className = "calendar-card-content";
     if (request) {
       content.textContent = request.employeeLoginId || request.employeeName;
     } else if (isWeekend) {
-      content.textContent = "Weekend: leave not allowed";
+      content.textContent = "No leave";
     } else {
-      content.textContent = "Available";
+      content.textContent = "Open";
     }
 
     card.append(heading, content);
